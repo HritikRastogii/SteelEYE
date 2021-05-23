@@ -91,7 +91,7 @@ def filter_trade(db: Session, asset_class=None, end=None, maxPrice=None, minPric
         search_items = search_items.filter(models.Trade.assetClass == asset_class)
     if start and end:
         # handle if both params are provided
-        search_items = search_items.filter(models.Trade.tradeDateTime >= start & models.Trade.tradeDateTime <= end)
+        search_items = search_items.filter((models.Trade.tradeDateTime >= start) & (models.Trade.tradeDateTime <= end))
     elif end:
         search_items = search_items.filter(models.Trade.tradeDateTime >= end)
     elif start:
@@ -99,7 +99,7 @@ def filter_trade(db: Session, asset_class=None, end=None, maxPrice=None, minPric
     if maxPrice and minPrice:
         # handle if both params are provided
         search_items = search_items.join(models.TradeDetails).filter(
-            models.TradeDetails.price >= minPrice & models.TradeDetails.price <= maxPrice)
+            (models.TradeDetails.price >= minPrice) & (models.TradeDetails.price <= maxPrice))
     elif maxPrice:
         search_items = search_items.join(models.TradeDetails).filter(models.TradeDetails.price >= maxPrice)
     elif minPrice:

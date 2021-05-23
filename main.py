@@ -36,12 +36,6 @@ def get_db():
         db.close()
 
 
-@app.post("/trade")
-async def create_trade(trade: Trade, db: Session = Depends(get_db)):
-    trade_obj = crud.create_trade_obj(db, trade=trade)
-    return trade_obj
-
-
 @app.get("/trade/{trade_id}/", response_model=schemas.Trade)
 async def get_trade(trade_id: str, db: Session = Depends(get_db)):
     trade_obj = crud.get_trade(db, trade_id=trade_id)
@@ -50,10 +44,17 @@ async def get_trade(trade_id: str, db: Session = Depends(get_db)):
     return trade_obj
 
 
+@app.post("/trade")
+async def create_trade(trade: Trade, db: Session = Depends(get_db)):
+    trade_obj = crud.create_trade_obj(db, trade=trade)
+    return trade_obj
+
+
 @app.delete("/trade/{trade_id}")
 def delete_trade(trade_id: str, db: Session = Depends(get_db)):
     trade_resp = crud.delete_trade(db, trade_id=trade_id)
     return trade_resp
+
 
 # @app.put("/trade/{trade_id}")
 
